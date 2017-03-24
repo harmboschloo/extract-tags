@@ -1,0 +1,9 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    [
+      "require-tags/babel-plugin",
+      {}
+    ]
+  ]
+}

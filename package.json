@@ -1,0 +1,31 @@
+{
+  "name": "require-tags",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "babel src -d lib",
+    "pretest": "rimraf test/output",
+    "test": "tape -r babel-register test",
+    "watch": "chokidar src test -i test/output -c \"npm run test\"",
+    "prepublish": "npm run clean && npm run build"
+  },
+  "author": "Harm Boschloo",
+  "license": "",
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-register": "^6.24.0",
+    "chokidar-cli": "^1.2.0",
+    "rimraf": "^2.6.1",
+    "tape": "^4.6.3"
+  },
+  "files": [
+    "lib",
+    "index.js",
+    "babel-plugin.js"
+  ]
+}
