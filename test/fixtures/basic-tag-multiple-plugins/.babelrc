@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    [
+      "../../../src/babel-plugin",
+      "../../../src/babel-plugin"
+    ]
+  ]
+}
