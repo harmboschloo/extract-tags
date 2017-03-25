@@ -16,6 +16,13 @@ export default ({types : t}) => {
   const findTagger = name =>
     data.taggers.find(tagger => tagger.name === name);
 
+  const getRelativeOutputFilePath = outputFilePath => {
+    const path = fp.relative(data.file.dir, outputFilePath)
+      .replace(/\\/g, '/');
+    return path.startsWith('..') ? path : './' + path;
+  }
+
+
   return {
     visitor: {
       Program(path, state) {
@@ -90,12 +97,11 @@ export default ({types : t}) => {
           fs.writeFileSync(outputFilePath, taggedString);
 
           // add import of output file
-          const relativeOutputFilePath = fp.relative(data.file.dir, outputFilePath);
-          const fixedOutputFilePath = relativeOutputFilePath.replace(/\\/g, '/');
+          const relativeOutputFilePath = getRelativeOutputFilePath(outputFilePath);
           tagger.importPath.insertAfter(
             t.importDeclaration(
               [t.importDefaultSpecifier(t.identifier(tagId))],
-              t.stringLiteral(fixedOutputFilePath)
+              t.stringLiteral(relativeOutputFilePath)
             )
           );
         }

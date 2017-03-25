@@ -1,0 +1,8 @@
+{
+  "outputs": [
+    {
+      "actual": "given_tag.txt",
+      "expected": "expected-output.txt"
+    }
+  ]
+}

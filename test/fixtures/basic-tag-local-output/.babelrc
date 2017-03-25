@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    [
+      "../../../src/babel-plugin",
+      {
+        "taggedOutputPath": "."
+      }
+    ]
+  ]
+}
