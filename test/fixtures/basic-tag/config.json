@@ -1,7 +1,7 @@
 {
   "outputs": [
     {
-      "actual": "../../../output/test/fixtures/basic-tag/given-tag0.txt",
+      "actual": "../../../output/test/fixtures/basic-tag/given_tag.txt",
       "expected": "expected-output.txt"
     }
   ]
