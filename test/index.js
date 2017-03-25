@@ -33,7 +33,8 @@ fs.readdirSync(fixturesDir).forEach((caseName) => {
     const givenPath = path.join(fixtureDir, config.given);
     const expectedPath = path.join(fixtureDir, config.expected);
 
-    const actualCode = trim(transformFileSync(givenPath).code);
+    const transformed = transformFileSync(givenPath);
+    const actualCode = trim(transformed.code);
     const expectedCode = clean(fs.readFileSync(expectedPath, 'utf8')).trim();
     t.equal(actualCode, expectedCode, 'should produce expected code');
 

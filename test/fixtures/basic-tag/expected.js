@@ -1,3 +1,4 @@
-import tagger from 'require-tags';
+import tagger from 'extract-tags';
 
-require('../../../output/test/fixtures/basic-tag/given-tag0.txt');
+import _tag from '../../../output/test/fixtures/basic-tag/given_tag.txt';
+tagger(_tag);
