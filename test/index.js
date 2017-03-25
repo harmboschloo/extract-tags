@@ -6,11 +6,11 @@ import {transformFileSync, transform} from 'babel-core';
 // const trim = str =>
 //   str.replace(/^ +| +$/gm, '');
 
-const trim = str =>
-  str.replace(/^\s+|\s+$/, '');
+const clearActual = str =>
+  str.replace(/^\s+|\s+$/, '').trim();
 
-const clean = str =>
-  str.replace(/\r/g, '');
+const cleanExpected = str =>
+  str.replace(/\r/g, '').trim();
 
 const defaultConfig = {
   given: 'given.js',
@@ -34,18 +34,17 @@ fs.readdirSync(fixturesDir).forEach((caseName) => {
     const expectedPath = path.join(fixtureDir, config.expected);
 
     const transformed = transformFileSync(givenPath);
-    const actualCode = trim(transformed.code);
-    const expectedCode = clean(fs.readFileSync(expectedPath, 'utf8')).trim();
+    const actualCode = clearActual(transformed.code);
+    const expectedCode = cleanExpected(fs.readFileSync(expectedPath, 'utf8')).trim();
     t.equal(actualCode, expectedCode, 'should produce expected code');
 
     config.outputs.forEach((output, index) => {
       const actualOutputPath = path.join(fixtureDir, output.actual);
       const expectedOutputPath = path.join(fixtureDir, output.expected);
 
-      const actualOutput = trim(fs.readFileSync(actualOutputPath, 'utf8'));
-      const expectedOutput = clean(fs.readFileSync(expectedOutputPath, 'utf8'));
+      const actualOutput = clearActual(fs.readFileSync(actualOutputPath, 'utf8'));
+      const expectedOutput = cleanExpected(fs.readFileSync(expectedOutputPath, 'utf8'));
       t.equal(actualOutput, expectedOutput, `should produce expected output ${index}`);
-
     });
 
 
