@@ -6,9 +6,9 @@ const defaultOptions = {
   taggerModule: 'extract-tags',
   outputPath: fp.join(__dirname, '../output'),
   outputFileExtension: "txt"
-}
+};
 
-export default ({types : t}) => {
+export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
   let data = {};
 
@@ -29,13 +29,11 @@ export default ({types : t}) => {
           throw path.buildCodeFrameError("Filename required");
         }
 
-        data.options = Object.assign({}, defaultOptions, state.opts)
+        data.options = Object.assign({}, defaultOptions, createOptions, state.opts);
         data.file = fp.parse(path.hub.file.opts.filename);
         data.taggers = [];
 
         // TODO validate options
-
-        // console.log('data', data);
       },
       ImportDeclaration(path) {
         const source = path.node.source.value;
@@ -50,7 +48,6 @@ export default ({types : t}) => {
                 name: path.node.local.name
               }
               data.taggers = data.taggers.concat(tagger);
-              // console.log('taggers', data.taggers);
             }
           });
         }
@@ -74,6 +71,7 @@ export default ({types : t}) => {
           const taggedString = quasis[0].value.cooked;
           const {file, options} = data;
 
+          // construct output path
           const relativePath = fp.relative(options.outputPath, file.dir);
           const strippedPath = relativePath.replace(/\.\./g, '.');
           const outputPath = fp.join(options.outputPath, strippedPath);
@@ -107,3 +105,5 @@ export default ({types : t}) => {
     }
   };
 };
+
+export default createPlugin();
