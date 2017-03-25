@@ -3,9 +3,9 @@ import fs from 'fs';
 import mkdirp from 'mkdirp';
 
 const defaultOptions = {
-  taggerModules: ['extract-tags'],
-  taggedOutputPath: fp.join(__dirname, '../output'),
-  taggedFileExtension: "txt"
+  taggerModule: 'extract-tags',
+  outputPath: fp.join(__dirname, '../output'),
+  outputFileExtension: "txt"
 }
 
 export default ({types : t}) => {
@@ -40,7 +40,7 @@ export default ({types : t}) => {
       ImportDeclaration(path) {
         const source = path.node.source.value;
 
-        if (data.options.taggerModules.includes(source)) {
+        if (data.options.taggerModule === source) {
           const importPath = path;
 
           path.traverse({
@@ -72,11 +72,11 @@ export default ({types : t}) => {
           }
 
           const taggedString = quasis[0].value.cooked;
-          const {taggedOutputPath, taggedFileExtension} = data.options;
+          const {file, options} = data;
 
-          const relativePath = fp.relative(taggedOutputPath, data.file.dir);
+          const relativePath = fp.relative(options.outputPath, file.dir);
           const strippedPath = relativePath.replace(/\.\./g, '.');
-          const outputPath = fp.join(taggedOutputPath, strippedPath);
+          const outputPath = fp.join(options.outputPath, strippedPath);
 
           mkdirp.sync(outputPath);
 
@@ -90,7 +90,7 @@ export default ({types : t}) => {
           );
 
           // write tagged string to output file
-          const outputFilename = `${data.file.name}${tagId}.${taggedFileExtension}`;
+          const outputFilename = `${file.name}${tagId}.${options.outputFileExtension}`;
           const outputFilePath = fp.join(outputPath, outputFilename);
           fs.writeFileSync(outputFilePath, taggedString);
 

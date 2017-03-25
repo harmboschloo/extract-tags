@@ -4,7 +4,7 @@
     [
       "extract-tags/babel-plugin",
       {
-        "taggedFileExtension": "css"
+        "outputFileExtension": "css"
       }
     ]
   ]
