@@ -4,7 +4,6 @@ import mkdirp from 'mkdirp';
 
 const defaultOptions = {
   taggerModules: ['extract-tags'],
-  taggers: null,
   taggedOutputPath: fp.join(__dirname, '../output'),
   taggedFileExtension: "txt"
 }
@@ -19,7 +18,7 @@ export default ({types : t}) => {
   const getRelativeOutputFilePath = outputFilePath => {
     const path = fp.relative(data.file.dir, outputFilePath)
       .replace(/\\/g, '/');
-    return path.startsWith('..') ? path : './' + path;
+    return path.charAt(0) !== '.' ? './' + path : path;
   }
 
 
