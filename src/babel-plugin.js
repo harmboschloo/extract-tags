@@ -31,7 +31,6 @@ export default ({types : t}) => {
 
         data.options = Object.assign({}, defaultOptions, state.opts)
         data.file = fp.parse(path.hub.file.opts.filename);
-        data.lastTaggerImportPath = null;
         data.taggers = [];
 
         // TODO validate options
@@ -97,7 +96,7 @@ export default ({types : t}) => {
 
           // add import of output file
           const relativeOutputFilePath = getRelativeOutputFilePath(outputFilePath);
-          tagger.importPath.insertAfter(
+          tagger.importPath.insertBefore(
             t.importDeclaration(
               [t.importDefaultSpecifier(t.identifier(tagId))],
               t.stringLiteral(relativeOutputFilePath)

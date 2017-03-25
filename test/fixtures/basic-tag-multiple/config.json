@@ -1,0 +1,12 @@
+{
+  "outputs": [
+    {
+      "actual": "../../../output/test/fixtures/basic-tag-multiple/given_tag.txt",
+      "expected": "expected-output.txt"
+    },
+    {
+      "actual": "../../../output/test/fixtures/basic-tag-multiple/given_tag2.txt",
+      "expected": "expected-output2.txt"
+    }
+  ]
+}
