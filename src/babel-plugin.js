@@ -4,6 +4,8 @@ import mkdirp from 'mkdirp';
 
 const defaultOptions = {
   taggerModule: 'extract-tags',
+  taggedPrefix: '',
+  taggedSuffix: '',
   outputPath: fp.join(__dirname, '../output'),
   outputFileExtension: "txt"
 };
@@ -109,7 +111,8 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
           // write tagged string to output file
           const outputFilename = `${file.name}${tagId}.${options.outputFileExtension}`;
           const outputFilePath = fp.join(outputPath, outputFilename);
-          fs.writeFileSync(outputFilePath, taggedString);
+          const outputString = `${options.taggedPrefix}${taggedString}${options.taggedSuffix}`;
+          fs.writeFileSync(outputFilePath, outputString);
 
           // add import of output file
           const relativeOutputFilePath = getRelativeOutputFilePath(outputFilePath);
