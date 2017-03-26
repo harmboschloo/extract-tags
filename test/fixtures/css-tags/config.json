@@ -1,0 +1,16 @@
+{
+  "outputs": [
+    {
+      "actual": "../../../output/test/fixtures/css-tags/given_tag.css",
+      "expected": "expected-output.css"
+    },
+    {
+      "actual": "../../../output/test/fixtures/css-tags/given_tag2.css",
+      "expected": "expected-output2.css"
+    },
+    {
+      "actual": "../../../output/test/fixtures/css-tags/given_tag3.css",
+      "expected": "expected-output3.css"
+    }
+  ]
+}

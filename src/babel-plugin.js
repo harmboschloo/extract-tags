@@ -12,6 +12,24 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
   let data = {};
 
+  const getTagProps = tag => {
+    if (t.isIdentifier(tag)) {
+      return {
+        name: tag.name,
+        callee: t.identifier(tag.name)
+      };
+    } else if(t.isMemberExpression(tag)) {
+      return {
+        name: tag.object.name,
+        callee: t.memberExpression(
+          t.identifier(tag.object.name),
+          t.identifier(tag.property.name)
+        )
+      }
+    }
+    return {};
+  };
+
   const findTagger = name =>
     data.taggers.find(tagger => tagger.name === name);
 
@@ -53,7 +71,8 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         }
       },
       TaggedTemplateExpression(path) {
-        const tagger = findTagger(path.node.tag.name)
+        const tagProps = getTagProps(path.node.tag);
+        const tagger = findTagger(tagProps.name)
         if (tagger) {
           // check if the tagger is from the import (root) scope
           // assuming we only need to check imports
@@ -78,11 +97,11 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
           mkdirp.sync(outputPath);
 
-          // replace tagged template expression with "tagger(tagId)" call
+          // replace tagged template expression with tagger function call
           const tagId = path.scope.generateUid('tag');
           path.replaceWith(
             t.callExpression(
-              t.identifier(tagger.name),
+              tagProps.callee,
               [t.identifier(tagId)]
             )
           );

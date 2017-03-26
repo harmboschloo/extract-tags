@@ -18,13 +18,14 @@ const defaultConfig = {
   outputs: []
 }
 
+const fixturesDir = path.join(__dirname, 'fixtures');
+
 const getConfig = fixtureDir => {
   const config = require(path.join(fixtureDir, 'config.json'));
   return Object.assign({}, defaultConfig, config);
 }
 
-const fixturesDir = path.join(__dirname, 'fixtures');
-fs.readdirSync(fixturesDir).forEach((caseName) => {
+const testCase = caseName =>
   test(`test ${caseName.replace(/[-]+/, ' ')}`, t => {
     const fixtureDir = path.join(fixturesDir, caseName);
 
@@ -47,13 +48,7 @@ fs.readdirSync(fixturesDir).forEach((caseName) => {
       t.equal(actualOutput, expectedOutput, `should produce expected output ${index}`);
     });
 
-
-    // Test
-    // const givenCode = fs.readFileSync(givenPath, 'utf8');
-    // transform(givenCode, {
-    //   "presets": ["es2015"], plugins:["./src/babel-plugin"]
-    // });
-
     t.end();
-  })
-})
+  });
+
+fs.readdirSync(fixturesDir).forEach(testCase);
