@@ -1,1 +1,3 @@
-display: inline;
+:local(.className) {
+  display: inline;
+}

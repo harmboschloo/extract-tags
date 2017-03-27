@@ -1,1 +1,3 @@
-display: none;
+:local(.className) {
+  display: none;
+}

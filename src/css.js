@@ -1,3 +1,3 @@
 export const global = a => a;
-export const local = ({className}) => className;
+export const local = a => a.className;
 export default local;
