@@ -2,23 +2,58 @@ import fp from 'path';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 
-const defaultOptions = {
+const initialOptions = {
   taggerModule: 'extract-tags',
   taggedPrefix: '',
   taggedSuffix: '',
   outputPath: fp.join(__dirname, '../output'),
-  outputFileExtension: "txt"
+  outputFileExtension: "txt",
+  taggerMembers: {},
 };
 
 export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
   let data = {};
 
+  const getOptions = stateOptions => {
+    const taggerMembers = Object.assign(
+      {},
+      initialOptions.taggerMembers,
+      createOptions.taggerMembers,
+      stateOptions.taggerMembers
+    );
+
+    const defaultOptions = Object.assign(
+      {},
+      initialOptions,
+      createOptions,
+      stateOptions,
+      {taggerMembers: null, taggerMember: null}
+    );
+
+    const options = Object.keys(taggerMembers)
+      .map(member => Object.assign(
+        {},
+        defaultOptions,
+        taggerMembers[member],
+        {taggerMember: member}
+      ))
+      .concat(defaultOptions);
+
+    return options;
+  }
+
+  const findTagOptions = (member) =>
+    data.options.find(opts =>
+      opts.taggerMember === member || opts.taggerMember === null
+    );
+
   const getTagProps = tag => {
     if (t.isIdentifier(tag)) {
       return {
         name: tag.name,
-        callee: t.identifier(tag.name)
+        callee: t.identifier(tag.name),
+        options: findTagOptions(null)
       };
     } else if(t.isMemberExpression(tag)) {
       return {
@@ -26,7 +61,8 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         callee: t.memberExpression(
           t.identifier(tag.object.name),
           t.identifier(tag.property.name)
-        )
+        ),
+        options: findTagOptions(tag.property.name)
       }
     }
     return {};
@@ -49,7 +85,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
           throw path.buildCodeFrameError("Filename required");
         }
 
-        data.options = Object.assign({}, defaultOptions, createOptions, state.opts);
+        data.options = getOptions(state.opts);
         data.file = fp.parse(path.hub.file.opts.filename);
         data.taggers = [];
 
@@ -58,7 +94,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
       ImportDeclaration(path) {
         const source = path.node.source.value;
 
-        if (data.options.taggerModule === source) {
+        if (data.options.find(opts => opts.taggerModule === source)) {
           const importPath = path;
 
           path.traverse({
@@ -90,7 +126,8 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
           }
 
           const taggedString = quasis[0].value.cooked;
-          const {file, options} = data;
+          const {file} = data;
+          const {options} = tagProps;
 
           // construct output path
           const relativePath = fp.relative(options.outputPath, file.dir);
