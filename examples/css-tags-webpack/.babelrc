@@ -1,0 +1,8 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    [
+      "extract-tags/css-babel-plugin"
+    ]
+  ]
+}
