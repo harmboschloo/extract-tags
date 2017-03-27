@@ -26,7 +26,7 @@ const getConfig = fixtureDir => {
 }
 
 const testCase = caseName =>
-  test(`test ${caseName.replace(/[-]+/, ' ')}`, t => {
+  test(`test ${caseName.replace(/[-]+/g, ' ')}`, t => {
     const fixtureDir = path.join(fixturesDir, caseName);
 
     const config = getConfig(fixtureDir);
