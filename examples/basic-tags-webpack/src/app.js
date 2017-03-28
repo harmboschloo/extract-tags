@@ -15,7 +15,7 @@ const classNames = css`
 `;
 
 const hello = document.createElement('div');
-hello.innerHTML = 'Hello tags';
+hello.innerHTML = 'Hello basic tags';
 document.body.appendChild(hello);
 
 const success = document.createElement('div');

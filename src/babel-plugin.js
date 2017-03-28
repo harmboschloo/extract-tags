@@ -37,34 +37,38 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         defaultOptions,
         taggerMembers[member],
         {taggerMember: member}
-      ))
-      .concat(defaultOptions);
+      ));
 
-    return options;
+    return options.length ? options : [defaultOptions];
   }
 
   const findTagOptions = (member) =>
-    data.options.find(opts =>
-      opts.taggerMember === member || opts.taggerMember === null
-    );
+    data.options.find(opts => opts.taggerMember === member);
 
   const getTagProps = tag => {
     if (t.isIdentifier(tag)) {
-      return {
-        name: tag.name,
-        callee: t.identifier(tag.name),
-        options: findTagOptions(null)
-      };
+      const options = findTagOptions(null);
+      if (options) {
+        return {
+          name: tag.name,
+          callee: t.identifier(tag.name),
+          options
+        };
+      }
     } else if(t.isMemberExpression(tag)) {
-      return {
-        name: tag.object.name,
-        callee: t.memberExpression(
-          t.identifier(tag.object.name),
-          t.identifier(tag.property.name)
-        ),
-        options: findTagOptions(tag.property.name)
+      const options = findTagOptions(tag.property.name);
+      if (options) {
+        return {
+          name: tag.object.name,
+          callee: t.memberExpression(
+            t.identifier(tag.object.name),
+            t.identifier(tag.property.name)
+          ),
+          options
+        };
       }
     }
+
     return {};
   };
 

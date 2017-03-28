@@ -1,10 +1,9 @@
 {
-  "name": "basic-tag-webpack",
-  "version": "0.0.1",
-  "description": "basic tag webpack example",
+  "name": "basic-tags-webpack",
+  "version": "0.1.0",
+  "description": "basic tags webpack example",
   "scripts": {
-    "build": "webpack",
-    "test": "test"
+    "build": "webpack"
   },
   "author": "Harm Boschloo",
   "license": "",

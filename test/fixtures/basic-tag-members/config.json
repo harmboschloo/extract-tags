@@ -1,20 +1,12 @@
 {
   "outputs": [
     {
-      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag.txt",
+      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag.1.txt",
       "expected": "expected-output.txt"
     },
     {
-      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag2.1.txt",
+      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag2.2.txt",
       "expected": "expected-output2.txt"
-    },
-    {
-      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag3.2.txt",
-      "expected": "expected-output3.txt"
-    },
-    {
-      "actual": "../../../output/test/fixtures/basic-tag-members/given_tag4.txt",
-      "expected": "expected-output4.txt"
     }
   ]
 }

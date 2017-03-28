@@ -1,14 +1,14 @@
-import styled from 'extract-tags/css';
+import css from 'extract-tags/css';
 
-styled`
+css`
   display: none;
 `;
 
-styled.local`
+css.local`
   display: inline;
 `;
 
-styled.global`
+css.global`
   div {
     display: block;
   }
