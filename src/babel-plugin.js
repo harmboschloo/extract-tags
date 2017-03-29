@@ -16,29 +16,27 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
   let data = {};
 
   const getOptions = stateOptions => {
-    const taggerMembers = Object.assign(
-      {},
-      initialOptions.taggerMembers,
-      createOptions.taggerMembers,
-      stateOptions.taggerMembers
-    );
+    const taggerMembers = {
+      ...initialOptions.taggerMembers,
+      ...createOptions.taggerMembers,
+      ...stateOptions.taggerMembers
+    };
 
-    const defaultOptions = Object.assign(
-      {},
-      initialOptions,
-      createOptions,
-      stateOptions,
-      {taggerMembers: null, taggerMember: null}
-    );
+    const defaultOptions = {
+      ...initialOptions,
+      ...createOptions,
+      ...stateOptions,
+      taggerMembers: null,
+      taggerMember: null
+    };
 
     const options = Object.keys(taggerMembers)
       .sort(a => a === '*' ? 1 : 0)
-      .map(member => Object.assign(
-        {},
-        defaultOptions,
-        taggerMembers[member],
-        {taggerMember: member}
-      ));
+      .map(member => ({
+        ...defaultOptions,
+        ...taggerMembers[member],
+        taggerMember: member
+      }));
 
     return options.length ? options : [defaultOptions];
   }

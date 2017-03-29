@@ -22,7 +22,7 @@ const fixturesDir = path.join(__dirname, 'fixtures');
 
 const getConfig = fixtureDir => {
   const config = require(path.join(fixtureDir, 'config.json'));
-  return Object.assign({}, defaultConfig, config);
+  return {...defaultConfig, ...config};
 }
 
 const testCase = caseName =>

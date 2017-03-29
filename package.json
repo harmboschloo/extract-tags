@@ -1,6 +1,6 @@
 {
   "name": "extract-tags",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "",
   "scripts": {
     "clean": "rimraf lib",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015": "^6.24.0",
     "babel-register": "^6.24.0",
     "chokidar-cli": "^1.2.0",
@@ -29,6 +30,8 @@
     "index.js",
     "babel-plugin.js",
     "css.js",
-    "css-babel-plugin.js"
+    "css-babel-plugin.js",
+    "react.js",
+    "react-babel-plugin.js"
   ]
 }
