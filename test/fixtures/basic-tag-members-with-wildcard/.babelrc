@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    [
+      "../../../src/babel-plugin",
+      {
+        "taggerMembers": {
+          "prop1": {
+            "outputFileExtension": "1.txt"
+          },
+          "*": {
+            "outputFileExtension": "x.txt"
+          },
+          "prop2": {
+            "outputFileExtension": "2.txt"
+          }
+        }
+      }
+    ]
+  ]
+}

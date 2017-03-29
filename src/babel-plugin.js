@@ -32,6 +32,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
     );
 
     const options = Object.keys(taggerMembers)
+      .sort(a => a === '*' ? 1 : 0)
       .map(member => Object.assign(
         {},
         defaultOptions,
@@ -42,8 +43,11 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
     return options.length ? options : [defaultOptions];
   }
 
-  const findTagOptions = (member) =>
-    data.options.find(opts => opts.taggerMember === member);
+  const findTagOptions = (member = null) =>
+    data.options.find(
+      opts => opts.taggerMember === member ||
+      (member !== null && opts.taggerMember === '*')
+    );
 
   const getTagProps = tag => {
     if (t.isIdentifier(tag)) {
