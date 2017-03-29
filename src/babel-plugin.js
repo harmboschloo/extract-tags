@@ -43,7 +43,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
     return options.length ? options : [defaultOptions];
   }
 
-  const findTagOptions = (member = null) =>
+  const findTagOptions = ({member = null}) =>
     data.options.find(
       opts => opts.taggerMember === member ||
       (member !== null && opts.taggerMember === '*')
@@ -51,26 +51,17 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
   const getTagProps = tag => {
     if (t.isIdentifier(tag)) {
-      const options = findTagOptions(null);
-      if (options) {
-        return {
-          name: tag.name,
-          callee: t.identifier(tag.name),
-          options
-        };
-      }
+      return {
+        name: tag.name,
+        member: null
+      };
     } else if(t.isMemberExpression(tag)) {
-      const options = findTagOptions(tag.property.name);
-      if (options) {
-        return {
-          name: tag.object.name,
-          callee: t.memberExpression(
-            t.identifier(tag.object.name),
-            t.identifier(tag.property.name)
-          ),
-          options
-        };
-      }
+      return {
+        name: tag.object.name,
+        member: tag.property.name
+      };
+    } else if (t.isCallExpression(tag)) {
+      return getTagProps(tag.callee);
     }
 
     return {};
@@ -117,9 +108,12 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         }
       },
       TaggedTemplateExpression(path) {
-        const tagProps = getTagProps(path.node.tag);
-        const tagger = findTagger(tagProps.name)
-        if (tagger) {
+        const {tag} = path.node;
+        const tagProps = getTagProps(tag);
+        const options = findTagOptions(tagProps);
+        const tagger = findTagger(tagProps.name);
+
+        if (tagger && options) {
           // check if the tagger is from the import (root) scope
           // assuming we only need to check imports
           const binding = path.scope.getBinding(tagger.name);
@@ -135,7 +129,6 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
           const taggedString = quasis[0].value.cooked;
           const {file} = data;
-          const {options} = tagProps;
 
           // construct output path
           const relativePath = fp.relative(options.outputPath, file.dir);
@@ -148,7 +141,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
           const tagId = path.scope.generateUid('tag');
           path.replaceWith(
             t.callExpression(
-              tagProps.callee,
+              t.cloneDeep(tag),
               [t.identifier(tagId)]
             )
           );
