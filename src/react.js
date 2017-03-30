@@ -143,18 +143,27 @@ const elements = [
 const global = a => a;
 const local = a => a.className;
 
-const reactComponent = type => (classNames = {}) => props => {
+const component = type => (classNames = {}) => props => {
   const className =
     `${local(classNames) || ''} ${props.className || ''}`.trim() || null;
   return createElement(type, {...props, className});
 };
 
+const createFactory = type => createElement.bind(null, type);
+
+const componentFactory = type => classNames =>
+  createFactory(component(type)(classNames));
+
 const api = {
   global,
   local,
-  comp: reactComponent
+  component,
+  componentFactory
 };
 
-elements.forEach(element => api[element] = reactComponent(element));
+elements.forEach(element => {
+  api[element] = component(element);
+  api[`${element}Factory`] = componentFactory(element);
+});
 
 export default api;
