@@ -22,7 +22,7 @@
     "tape": "^4.6.3"
   },
   "scripts": {
-    "clean": "rimraf lib",
+    "clean": "rimraf ./*.js",
     "build": "babel src -d .",
     "pretest": "rimraf output test/**/*_tag*.*",
     "test": "tape -r babel-register test | tap-diff",
