@@ -11,6 +11,15 @@ const initialOptions = {
   taggerMembers: {},
 };
 
+const fixOptions = ({taggerModule, taggerModules, ...options}) =>
+  (taggerModule || taggerModules) ?
+    {
+      ...options,
+      taggerModules: (taggerModules || []).concat(taggerModule || [])
+    } :
+    options
+  ;
+
 export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
   let data = {};
@@ -23,9 +32,9 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
     };
 
     const defaultOptions = {
-      ...initialOptions,
-      ...createOptions,
-      ...stateOptions,
+      ...fixOptions(initialOptions),
+      ...fixOptions(createOptions),
+      ...fixOptions(stateOptions),
       taggerMembers: null,
       taggerMember: null
     };
@@ -34,12 +43,15 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
       .sort(a => a === '*' ? 1 : 0)
       .map(member => ({
         ...defaultOptions,
-        ...taggerMembers[member],
+        ...fixOptions(taggerMembers[member]),
         taggerMember: member
       }));
 
     return options.length ? options : [defaultOptions];
   }
+
+  const isTaggerModule = source =>
+    data.options.some(opts => opts.taggerModules.indexOf(source) !== -1);
 
   const findTagOptions = ({member = null}) =>
     data.options.find(
@@ -85,13 +97,14 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         data.options = getOptions(state.opts);
         data.file = fp.parse(path.hub.file.opts.filename);
         data.taggers = [];
+        data.insertPath = null;
 
         // TODO validate options
+
       },
       ImportDeclaration(path) {
         const source = path.node.source.value;
-
-        if (data.options.find(opts => opts.taggerModule === source)) {
+        if (isTaggerModule(source)) {
           const importPath = path;
 
           path.traverse({
@@ -101,6 +114,10 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
                 name: path.node.local.name
               }
               data.taggers = data.taggers.concat(tagger);
+              
+              if (!data.insertPath) {
+                data.insertPath = importPath;
+              }
             }
           });
         }
@@ -152,7 +169,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
 
           // add import of output file
           const relativeOutputFilePath = getRelativeOutputFilePath(outputFilePath);
-          tagger.importPath.insertBefore(
+          data.insertPath.insertBefore(
             t.importDeclaration(
               [t.importDefaultSpecifier(t.identifier(tagId))],
               t.stringLiteral(relativeOutputFilePath)
