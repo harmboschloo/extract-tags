@@ -1,8 +1,0 @@
-{
-  "outputs": [
-    {
-      "actual": "../../../output/test/fixtures/basic-tag-multiple-plugins/given_tag.txt",
-      "expected": "expected-output.txt"
-    }
-  ]
-}

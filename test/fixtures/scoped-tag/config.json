@@ -1,0 +1,8 @@
+{
+  "outputs": [
+    {
+      "actual": "../../../output/test/fixtures/scoped-tag/given_tag.txt",
+      "expected": "expected-output.txt"
+    }
+  ]
+}

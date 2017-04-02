@@ -1,0 +1,16 @@
+{
+  "outputs": [
+    {
+      "actual": "../../../output/test/fixtures/wildcard-member-tags/given_tag.1.txt",
+      "expected": "expected-output.txt"
+    },
+    {
+      "actual": "../../../output/test/fixtures/wildcard-member-tags/given_tag2.2.txt",
+      "expected": "expected-output2.txt"
+    },
+    {
+      "actual": "../../../output/test/fixtures/wildcard-member-tags/given_tag3.x.txt",
+      "expected": "expected-output3.txt"
+    }
+  ]
+}

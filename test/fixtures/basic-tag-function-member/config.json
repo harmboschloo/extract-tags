@@ -1,8 +1,0 @@
-{
-  "outputs": [
-    {
-      "actual": "../../../output/test/fixtures/basic-tag-function-member/given_tag.txt",
-      "expected": "expected-output.txt"
-    }
-  ]
-}

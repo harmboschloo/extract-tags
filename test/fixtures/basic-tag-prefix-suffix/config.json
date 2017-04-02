@@ -1,8 +1,0 @@
-{
-  "outputs": [
-    {
-      "actual": "../../../output/test/fixtures/basic-tag-prefix-suffix/given_tag.txt",
-      "expected": "expected-output.txt"
-    }
-  ]
-}
