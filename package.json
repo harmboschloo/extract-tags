@@ -1,8 +1,9 @@
 {
   "name": "extract-tags",
   "version": "0.1.0",
-  "description": "Babel plugin to extracts tagged template literals. Use together with a webpack loader.",
+  "description": "Babel plugin to extracts tagged template literals to file. Files can be loaded by webpack.",
   "files": [
+    "lib",
     "index.js",
     "babel-plugin.js",
     "css.js",
@@ -22,8 +23,8 @@
     "tape": "^4.6.3"
   },
   "scripts": {
-    "clean": "rimraf ./*.js",
-    "build": "babel src -d .",
+    "clean": "rimraf lib",
+    "build": "babel src -d lib",
     "pretest": "rimraf output test/**/*_tag*.*",
     "test": "tape -r babel-register test | tap-diff",
     "watch": "chokidar src test -i test/output -i test/**/*_tag*.* -c \"npm run test\"",
