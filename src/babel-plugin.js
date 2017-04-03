@@ -45,7 +45,8 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
         ...defaultOptions,
         ...fixOptions(taggerMembers[member]),
         taggerMember: member
-      }));
+      }))
+      .concat(defaultOptions);
 
     return options.length ? options : [defaultOptions];
   }
@@ -114,7 +115,7 @@ export const createPlugin = (createOptions = {}) => ({types : t}) => {
                 name: path.node.local.name
               }
               data.taggers = data.taggers.concat(tagger);
-              
+
               if (!data.insertPath) {
                 data.insertPath = importPath;
               }

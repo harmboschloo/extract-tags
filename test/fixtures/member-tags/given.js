@@ -1,9 +1,5 @@
 import tagger from 'extract-tags';
 
-tagger`
-  tagged
-`;
-
 tagger.prop1`
   tagged member 1
 `;
@@ -14,4 +10,8 @@ tagger.prop2`
 
 tagger.other`
   tagged other
+`;
+
+tagger`
+  tagged
 `;

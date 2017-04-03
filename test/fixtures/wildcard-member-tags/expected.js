@@ -3,10 +3,6 @@ import _tag2 from '../../../output/test/fixtures/wildcard-member-tags/given_tag2
 import _tag3 from '../../../output/test/fixtures/wildcard-member-tags/given_tag3.x.txt';
 import tagger from 'extract-tags';
 
-tagger`
-  tagged
-`;
-
 tagger.prop1(_tag);
 
 tagger.prop2(_tag2);

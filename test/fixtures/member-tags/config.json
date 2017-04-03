@@ -7,6 +7,10 @@
     {
       "actual": "../../../output/test/fixtures/member-tags/given_tag2.2.txt",
       "expected": "expected-output2.txt"
+    },
+    {
+      "actual": "../../../output/test/fixtures/member-tags/given_tag3.txt",
+      "expected": "expected-output3.txt"
     }
   ]
 }
